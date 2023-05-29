@@ -1,0 +1,50 @@
+docker build .                      build a docker IMAGE
+docker run -p 8080:80 IMGNAME       run a docker container
+docker run -p 8080:80 -d IMGNAME       run a docker container in deattached mode
+docker ps -a                        list all container
+docker ps                           list only running containers
+docker images                       list all images
+docker kill CONTNRID
+docker stop IMG
+docker start CONTNRID                 starts exisitng container in detached mode
+docker start -a CONTNRID                 starts exisitng container in attached mode
+docker attach CONTAINER               attach to running container and u start getting cosole output
+docker logs CONTNRID                  display logs on console wo attaching to container (use -f to follow logs)
+
+docker run (attached mode) VS docker start (detached mode)
+
+    - attached mode is good for logging/ console outputs
+
+docker run -it CONTNRID             run in interactive mode (Work03 example)
+docker start -a -i CONTNRID         start in interactive mode (Work03 example)
+
+docker rm CONTNRID                          remove stopped container
+docker rmi IMGID                            removes the image
+docker image prune                          removes all un-used images
+docker run  -d --rm -p 8080:80 CONTNRID     runs container in detached mode and will remove as soon as container killed
+docker image inspect IMGID                  shows all inside the image configuration
+docker run  -d --rm -p 8080:80 --name App01 IMGID     runs container with custom name
+docker stop App01                                     stops the container and remove
+
+Work04
+docker build .
+docker run -p 8080:80 CONTNRID
+docker kill CONTNRID
+docker start CONTNRID
+goto web browser http://localhost:8080
+goto custom_page folder
+docker cp index.html 72b465a6b2a1:/usr/local/apache2/htdocs/
+refresh web browser! BOOM
+
+docker build -t localsrv:1.0 .                               give a custom name to image
+docker run  -d --rm -p 8080:80 --name App01 localsrv:1.0    runs container with custom name or IMGID
+docker push IMAGE_NAME                                      push image to docker hub
+    docker build -t sabirmustafapk/work04 . 
+        OR clone existing image to map naming convention in docker hub
+    docker tag websrv:1.0 sabirmustafapk/work04
+    docker push sabirmustafapk/work04                       user docker login first
+
+Work05
+docker pull IMAGE_NAME
+docker pull sabirmustafapk/work04
+docker cp index.html f7bc5b424f67:/usr/local/apache2/htdocs/
