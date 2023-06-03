@@ -1,0 +1,50 @@
+Volumes proide read-write capability in a container.
+A read-write layer on top of readonly layers of the container image.
+It resided within container, not in the image or OS.
+
+Work01
+temp folder, stored the data temprorarily
+feedback folder, stored the data permenantly
+
+docker build . -t datavol01.1  
+docker run -p 8080:80 -d --name feedback-form --rm datavol01.1
+
+The above folders will move to docker image and store data there, not to your local disk :)
+    The file can be reached after you stop/start container
+    The file will be lost in case container is destroyed
+
+How to sort out the problem [survive data incase container destroyed] - Dcoker Volumes :)
+
+Work02
+modified lines 39 and 40 in server.js to avoid crash
+
+docker build . -t datavol01.volumes
+docker run -p 8080:80 -d --name feedback-form --rm datavol01.volumes
+
+in browser "http://localhost:8080"
+in browser enter "test" into titlw and some info into document text
+now try "http://localhost:8080/test.txt" and you will see the file content from within container inside the browser
+
+Find out the docker named volume mapped locally while a container is running
+
+docker volume ls
+
+creating named volumes to survive data
+
+1. No need of VOLUME [ "/app/feedback" ] in the Dockerfile, you can delete It
+2. We will map volumes while starting docker container
+
+delete previous image
+docker build . -t datavol01.volumes
+docker run -p 8080:80 -d --name feedback-form -v feedback:/app/feedback  --rm datavol01.volumes
+make few entries with "test" Title and make a note
+run docker volume ls            You will see the volume locally 
+docker stop feedback-form       stop the docker container
+run docker volume ls            You will still see the volume locally  (thats why its called named volume)
+
+now again start your container with different name
+docker run -p 8080:80 -d --name feedback-test -v feedback:/app/feedback  --rm datavol01.volumes
+in browser type "http://localhost:8080/test.txt"    You will get it back :)
+
+docker volume rm VOL_NAME or
+docker volume prune
