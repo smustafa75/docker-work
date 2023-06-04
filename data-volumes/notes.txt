@@ -69,7 +69,7 @@ docker run -p 8080:80 -d --name feedback-test01 -v feedback:/app/feedback  datav
 docker run -p 8080:80 -d --name feedback-test01 -v feedback:/app/feedback   datavol01.volumes -v "%cd%:/app" feedback-node:volumes
 
 The problem is since you are trying to add binding while running container, it overwrites everything in /app folder inside the container launched from the image.
-Use anonymous volume in pattern /app/node_modules, it will surivive as the longest path win rule of docker filesystem and the overwrite of bind mount so instead of defining it insde Dockerfile, define it inside the docker run command
+Use anonymous volume in pattern /app/node_modules, it will surivive as the longest path win rule of docker filesystem
 moreover, the /app/node_modules is created by npm install in Docekrfile and stores dependencies so it should be protected.
 
 docker build -t feedback-node:volumes .
