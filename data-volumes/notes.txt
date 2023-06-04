@@ -16,6 +16,8 @@ The above folders will move to docker image and store data there, not to your lo
 How to sort out the problem [survive data incase container destroyed] - Dcoker Volumes :)
 
 Work02
+- docker volume
+
 modified lines 39 and 40 in server.js to avoid crash
 
 docker build . -t datavol01.volumes
@@ -45,6 +47,17 @@ run docker volume ls            You will still see the volume locally  (thats wh
 now again start your container with different name
 docker run -p 8080:80 -d --name feedback-test -v feedback:/app/feedback  --rm datavol01.volumes
 in browser type "http://localhost:8080/test.txt"    You will get it back :)
-
+docker volume ls        will show you volume named "feedback"
 docker volume rm VOL_NAME or
 docker volume prune
+
+- chnages in code to reflect in running container (bind-mounts)
+
+volumes are managed by docker and we dont know location. In bind mounts developer assigns the path on local machine
+You can bind a single file or a complete folder using below syntax
+Ensure that container have access to the path of bind mounts that you provide. You can do it in dockerdesktop/preferences/resources/file sharing and confirm the path is present.
+
+
+docker run -p 8080:80 -d --name feedback-test -v feedback:/app/feedback  --rm datavol01.volumes - ABSOLUTE_PATH:/app feedbacl-node:volumes
+
+
