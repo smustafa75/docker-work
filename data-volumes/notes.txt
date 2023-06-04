@@ -51,6 +51,8 @@ docker volume ls        will show you volume named "feedback"
 docker volume rm VOL_NAME or
 docker volume prune
 
+
+Work03
 - chnages in code to reflect in running container (bind-mounts)
 
 volumes are managed by docker and we dont know location. In bind mounts developer assigns the path on local machine
@@ -61,3 +63,16 @@ Ensure that container have access to the path of bind mounts that you provide. Y
 docker run -p 8080:80 -d --name feedback-test -v feedback:/app/feedback  --rm datavol01.volumes - ABSOLUTE_PATH:/app feedbacl-node:volumes
 
 
+docker run -p 8080:80 -d --name feedback-test01 -v feedback:/app/feedback  --rm datavol01.volumes -v "/g/My Drive/mine/TFTraining/Dockers/data-volumes/Work02/:/app" feedback-node:volumes
+run w/o -rm to troubelshoot
+docker run -p 8080:80 -d --name feedback-test01 -v feedback:/app/feedback  datavol01.volumes -v "/g/My Drive/mine/TFTraining/Dockers/data-volumes/Work02/:/app" feedback-node:volumes
+docker run -p 8080:80 -d --name feedback-test01 -v feedback:/app/feedback   datavol01.volumes -v "%cd%:/app" feedback-node:volumes
+
+The problem is since you are trying to add binding while running container, it overwrites everything in /app folder inside the container launched from the image.
+Use anonymous volume in pattern /app/node_modules, it will surivive as the longest path win rule of docker filesystem and the overwrite of bind mount so instead of defining it insde Dockerfile, define it inside the docker run command
+moreover, the /app/node_modules is created by npm install in Docekrfile and stores dependencies so it should be protected.
+
+docker build -t feedback-node:volumes .
+
+
+docker run -d -p 8080:80 --name feedback-form -v feedback:/app/feedback  -v "/g/My Drive/mine/TFTraining/Dockers/data-volumes/Work03/:/app" -v /app/node_modules feedback-node:volumes
