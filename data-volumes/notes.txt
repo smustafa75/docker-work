@@ -108,3 +108,26 @@ docker run -d -p 8080:80 --name feedback-form -v feedback:/app/feedback  -v "/g/
 if you run into some trouble restart the docker desktop. It will resolve any errors except JS specific.
 
 Use .dockerignore to let files being ignore from COPY command in DokcerFile
+
+
+Environment Variables/ Arguments
+=================================
+--build-arg
+--env
+
+
+modify Dockerfile as below
+ENV PORT 80
+
+EXPOSE $PORT
+
+last line of server. js can be modified as below
+
+app.listen(process.env.PORT); instead of 80
+
+You can even create a .env file having all the environment variables and change the docker run command by adding below arguement
+
+--env-file ./.env
+
+NOTEL: Do not commit the .env file to source control repo in case you have any sensitive information
+
