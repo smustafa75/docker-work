@@ -76,3 +76,10 @@ docker build -t feedback-node:volumes .
 
 
 docker run -d -p 8080:80 --name feedback-form -v feedback:/app/feedback  -v "/g/My Drive/mine/TFTraining/Dockers/data-volumes/Work03/:/app" -v /app/node_modules feedback-node:volumes
+
+
+make it easy
+============
+docker run -v /app/data                 Anonymous Volume
+docker run -v data:/app/data            Named volume
+docker run -v /code/path:/app/code      Bind mount
