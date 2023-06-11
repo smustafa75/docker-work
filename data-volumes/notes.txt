@@ -131,3 +131,17 @@ You can even create a .env file having all the environment variables and change 
 
 NOTEL: Do not commit the .env file to source control repo in case you have any sensitive information
 
+One more flexible example
+--------------------------
+In docker file you can add ARG that shall recieve port mapping at run time. Recommanded to put after COPY layer.
+
+ARG DEFAULT_PORT=80
+ENV PORT $DEFAULT_PORT
+EXPOSE $PORT
+Now you can build containers images with different ports
+
+docker build -t feedback-work:dev --build-arg DEFAULT_PORT=8080
+docker build -t feedback-work:qa --build-arg DEFAULT_PORT=8000
+docker build -t feedback-work:prod --build-arg DEFAULT_PORT=80
+
+
