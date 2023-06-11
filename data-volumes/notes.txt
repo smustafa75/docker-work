@@ -83,3 +83,13 @@ make it easy
 docker run -v /app/data                 Anonymous Volume
 docker run -v data:/app/data            Named volume
 docker run -v /code/path:/app/code      Bind mount
+
+
+S#           Anonymous Volumes                                  Named Volume                                        Bind mounts
+--          ------------------                                  -------------                                       ------------
+1.          Container specific                                  General, not tied to any container                  Located on host filesystem, not tied to specific container
+2.          Surive container shutdown/restart except --rm       Same as anonynmous, removal via Docker CLI          Same as both, removal on host fs needed
+3.          Cross container sharing not possible                Shared across containers                            Shared across containers
+4.          Can not be re-used                                  Can be re-used for same container across restart    Can be re-used for same container across restart
+5           docker run -v /app/data                             docker run -v data:/app/data                        docker run -v /code/path:/app/code
+
