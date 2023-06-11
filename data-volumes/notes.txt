@@ -74,8 +74,11 @@ moreover, the /app/node_modules is created by npm install in Docekrfile and stor
 
 docker build -t feedback-node:volumes .
 
-
+bind mount in read-write mode
 docker run -d -p 8080:80 --name feedback-form -v feedback:/app/feedback  -v "/g/My Drive/mine/TFTraining/Dockers/data-volumes/Work03/:/app" -v /app/node_modules feedback-node:volumes
+
+bind mount in readonly mode
+docker run -d -p 8080:80 --name feedback-form -v feedback:/app/feedback  -v "/g/My Drive/mine/TFTraining/Dockers/data-volumes/Work03/:/app:ro" -v /app/node_modules feedback-node:volumes
 
 
 make it easy
@@ -93,3 +96,15 @@ S#           Anonymous Volumes                                  Named Volume    
 4.          Can not be re-used                                  Can be re-used for same container across restart    Can be re-used for same container across restart
 5           docker run -v /app/data                             docker run -v data:/app/data                        docker run -v /code/path:/app/code
 
+
+Work04
+======
+--- Suitable for dvelopment only, its interacting with the code not for production ---
+
+Since we already have volumes, lets diable COPY in Docekrfile and run again
+docker build -t feedback-work:no-copy .
+docker run -d -p 8080:80 --name feedback-form -v feedback:/app/feedback  -v "/g/My Drive/mine/TFTraining/Dockers/data-volumes/Work04/:/app" -v /app/node_modules -v /app/temp  feedback-work:no-copy
+
+if you run into some trouble restart the docker desktop. It will resolve any errors except JS specific.
+
+Use .dockerignore to let files being ignore from COPY command in DokcerFile
