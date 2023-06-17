@@ -67,14 +67,47 @@ app.get('/people', async (req, res) => {
   }
 });
 
+//For testing without mongodb
+//app.listen(process.env.DB_PORT);
+
+
+//For testing while --network command is used to create docker aware networking. Consult notes.txt
 mongoose.connect(
-  'mongodb://localhost:27017/swfavorites',
+  'mongodb://mongodb:27017/swfavorites',
   { useNewUrlParser: true },
   (err) => {
     if (err) {
       console.log(err);
     } else {
-      app.listen(3000);
+      app.listen(process.env.DB_PORT);
     }
   }
 );
+
+//For testing while mongo is installed in a separate container. Consult notes.txt. MORE CUMBURSOME
+//mongoose.connect(
+//  'mongodb://172.17.0.2:27017/swfavorites',
+//  { useNewUrlParser: true },
+//  (err) => {
+//    if (err) {
+//      console.log(err);
+//    } else {
+//      app.listen(process.env.DB_PORT);
+//    }
+//  }
+//);
+
+
+//putting host.docker.internal will be identified by docker automatically you can replace mongodb:// with http:// also rest docker will do
+//for local mongodb installed
+//mongoose.connect(
+//  'mongodb://host.docker.internal:27017/swfavorites',
+//  { useNewUrlParser: true },
+//  (err) => {
+//    if (err) {
+//      console.log(err);
+//    } else {
+//      app.listen(process.env.DB_PORT);
+//    }
+//  }
+//);

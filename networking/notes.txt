@@ -9,5 +9,50 @@ communicating to external website/api from within container
 communiacting to a service like database on local machine
 communicating to another container (cross container communications)
 
-download postman also to check get and post requests
+download postman as well to check get and post requests
 
+test01: put remark to mongo code part and put       app.listen(process.env.DB_PORT); above it
+
+docker build -t fav-movie .
+docker run -d -p 3000:3000 --name fav-movies fav-movie:latest 
+
+Open POSTMAN choose GET and put localhost:3000/movies. Fecth and you will see results, meaning that container is able to connect to internet hostes APIs
+
+test02: storing data into mongo container
+un-comment the code and remove the last pasted line in test01. Consult the app.js.
+
+docker run -d --name mongodb mongo          it will pull latest mongodb image from docker hub and start the mongodb container
+
+docker container inspect mongodb            Grab the IPAddress and put it into app.js and then compile the application container
+
+docker build -t fav-movie .
+docker run -d -p 3000:3000 --name fav-movies fav-movie:latest
+
+inside POSTMAN run the GET and the post as below
+GET
+localhost:3000/movies
+
+POST
+localhost:3000/favorites
+{
+    "name": "A New Hope",
+    "type": "movie",
+    "url": "https://swapi.dev/api/films/1/"
+}
+
+
+the method of finding and ip address may be more cumbursome, lets try --network command to create docker aware networking. It will make easy
+for cross container communication.
+
+stop both containers
+remove the both container
+
+docker network create favorite-movies
+docker run -d --name mongodb --network favorite-movies mongo 
+
+modify app.js line with name of mongodb container
+    'mongodb://mongodb:27017/swfavorites',
+    save and build fresh container image
+
+docker build -t fav-movie .
+docker run -d -p 3000:3000 --name fav-movies --network favorite-movies fav-movie:latest
