@@ -1,0 +1,13 @@
+- Connecting containers with networks
+- Containers and external networks
+
+Work01
+containers & Network requests
+use case
+-------
+communicating to external website/api from within container
+communiacting to a service like database on local machine
+communicating to another container (cross container communications)
+
+download postman also to check get and post requests
+
